@@ -1,7 +1,24 @@
-# WGET COM AGENT DA VIRGINIA
-wget https://s3.us-east-1.amazonaws.com/amazoncloudwatch-agent-us-east-1/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb 
-# INSTALACAO DO AGENT
-dpkg -i -E ./amazon-cloudwatch-agent.deb 
+# WGET COM AGENT DA VIRGINIAcat
+DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
+UBUNTU="Ubuntu"
+CENTOS="CentOS Linux"
+AMAZON="Amazon Linux"
+if [[ $DISTRO == $UBUNTU ]]; then
+  # DOWNLOAD DO AGENT
+  wget https://s3.us-east-1.amazonaws.com/amazoncloudwatch-agent-us-east-1/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb 
+  # INSTALACAO DO AGENT
+  dpkg -i -E ./amazon-cloudwatch-agent.deb
+elif [[ $DISTRO == $CENTOS ]]; then
+  # DOWNLOAD DO AGENT
+  wget https://s3.amazonaws.com/amazoncloudwatch-agent/centos/amd64/latest/amazon-cloudwatch-agent.rpm
+  # INSTALACAO DO AGENT
+  rpm -ivh amazon-cloudwatch-agent.rpm
+else
+  # DOWNLOAD DO AGENT
+  https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+  # INSTALACAO DO AGENT
+  rpm -ivh amazon-cloudwatch-agent.rpm
+fi
 cd /opt/aws/amazon-cloudwatch-agent/bin 
 # BAIXAR SCRIPT DE COLETA (BASICO) PARA LINUX
 wget https://raw.githubusercontent.com/aldeiacloud/cloudwatch_ubuntu18/main/config.json 
